@@ -7,7 +7,7 @@ set -e
 printf "\033[0;32mRebuilding site...\033[0m\n"
 
 # Build the project.
-hugo
+hugo --gc
 
 # Go To Public folder
 cd public/
