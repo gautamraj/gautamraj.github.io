@@ -1,0 +1,86 @@
+baseURL = "https://gautamraj.github.io/"
+languageCode = "en-us"
+title = "Gautam's Blog"
+theme = "vanilla-bootstrap-hugo-theme"
+##googleAnalytics = "UA-123456789-1"
+
+[taxonomies]
+tag = "tags"
+
+[permalinks]
+post = "/:filename/"
+
+[[menu.nav]]
+name = "Home"
+pre = "home"
+url = "/"
+weight = 1
+
+[[menu.nav]]
+name = "Blog"
+pre = "edit"
+url = "/post/"
+weight = 2
+
+[[menu.nav]]
+name = "Tags"
+pre = "tag"
+url = "/tags/"
+weight = 3
+
+[[menu.nav]]
+name = "About"
+pre = "smile"
+url = "/about/"
+weight = 4
+
+[[menu.nav]]
+name = "RSS"
+pre = "rss"
+url = "/index.xml"
+weight = 5
+
+[params]
+includeBootstrapJs = false
+showActiveNav = true
+containerMaxWidth = "700px"
+dateFormat = "Jan 2, 2006"
+homeText = "Hello World!"
+footerText = "Made with [Hugo](https://gohugo.io/) & [Vanilla](https://github.com/zwbetz-gh/vanilla-bootstrap-hugo-theme)"
+hideFooter = true
+katex = true
+
+[markup]
+defaultMarkdownHandler = "goldmark"
+
+[markup.goldmark.extensions]
+definitionList = true
+footnote = true
+linkify = true
+strikethrough = true
+table = true
+taskList = true
+typographer = true
+
+[markup.goldmark.parser]
+attribute = true
+autoHeadingID = true
+
+[markup.goldmark.renderer]
+hardWraps = false
+unsafe = true
+xHTML = false
+
+  [markup.highlight]
+  codeFences = true
+  hl_Lines = ""
+  lineNoStart = 1
+  lineNos = false
+  lineNumbersInTable = true
+  noClasses = true
+  style = "monokai"
+  tabWidth = 4
+
+  [markup.tableOfContents]
+  endLevel = 6
+  startLevel = 2
