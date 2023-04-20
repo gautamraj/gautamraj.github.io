@@ -1,86 +1,69 @@
-baseURL = "https://gautamraj.github.io/"
-languageCode = "en-us"
 title = "Gautam's Blog"
-theme = "vanilla-bootstrap-hugo-theme"
-##googleAnalytics = "UA-123456789-1"
+baseURL = "https://gautamraj.github.io/"
 
-[taxonomies]
-tag = "tags"
+# This is what goes in <html lang="">
+languageCode = 'en-us'
 
-[permalinks]
-post = "/:filename/"
+theme = "hugo-blog-awesome"
 
-[[menu.nav]]
-name = "Home"
-pre = "home"
-url = "/"
-weight = 1
+# This defines how dates are formatted
+defaultContentLanguage = "en-us"
 
-[[menu.nav]]
-name = "Blog"
-pre = "edit"
-url = "/post/"
-weight = 2
+# To enable Google Analytics 4 (gtag.js) provide G-MEASUREMENT_ID below.
+# To disable  Google Analytics, simply leave the field empty or remove the next line
+googleAnalytics = '' # G-MEASUREMENT_ID
 
-[[menu.nav]]
-name = "Tags"
-pre = "tag"
-url = "/tags/"
-weight = 3
 
-[[menu.nav]]
-name = "About"
-pre = "smile"
-url = "/about/"
-weight = 4
+# Enable emojis globally
+enableEmoji = true
 
-[[menu.nav]]
-name = "RSS"
-pre = "rss"
-url = "/index.xml"
-weight = 5
+# set markup.highlight.noClasses=false to enable code highlight
+[markup]
+  [markup.highlight]
+    noClasses = false
+  [markup.goldmark.renderer]
+    unsafe = true
+
+[menu]
+  [[menu.main]] 
+    # The page reference (pageRef) is useful for menu highlighting
+    # When pageRef is set, setting `url` is optional; it will be used as a fallback if the page is not found.
+    pageRef="/"
+    name = 'Home'
+    url = '/'
+    weight = 10
+  [[menu.main]]
+    pageRef="posts"
+    name = 'Posts'
+    url = '/posts/'
+    weight = 20
+  [[menu.main]]
+    pageRef="about"
+    name = 'About'
+    url = '/about/'
+    weight = 30
 
 [params]
-includeBootstrapJs = false
-showActiveNav = true
-containerMaxWidth = "700px"
-dateFormat = "Jan 2, 2006"
-homeText = "Hello World!"
-footerText = "Made with [Hugo](https://gohugo.io/) & [Vanilla](https://github.com/zwbetz-gh/vanilla-bootstrap-hugo-theme)"
-hideFooter = true
-katex = true
+  sitename = "Another software engineering blog"
+  defaultColor = "dark" # set default color mode: dark or light
+  description = "Assorted thoughts on problems I've encountered and reflections on some of the things I've built"
+  mainSections = ['posts']
 
-[markup]
-defaultMarkdownHandler = "goldmark"
+[params.author]
+  avatar = "avatar.jpg" # put the file in assets folder; also ensure that image has same height and width
+  # Note: image is not rendered if the resource(avatar image) is not found. No error is displayed.
+  intro = "Another software engineering blog"
+  name = "Gautam Raj"
+  description = "Assorted thoughts on problems I've encountered and reflections on some of the things I've built"
 
-[markup.goldmark.extensions]
-definitionList = true
-footnote = true
-linkify = true
-strikethrough = true
-table = true
-taskList = true
-typographer = true
-
-[markup.goldmark.parser]
-attribute = true
-autoHeadingID = true
-
-[markup.goldmark.renderer]
-hardWraps = false
-unsafe = true
-xHTML = false
-
-  [markup.highlight]
-  codeFences = true
-  hl_Lines = ""
-  lineNoStart = 1
-  lineNos = false
-  lineNumbersInTable = true
-  noClasses = true
-  style = "monokai"
-  tabWidth = 4
-
-  [markup.tableOfContents]
-  endLevel = 6
-  startLevel = 2
+#[[params.socialIcons]]
+#name = "github"
+#url = "https://github.com/hugo-sid"
+#
+#[[params.socialIcons]]
+#name = "twitter"
+#url = "https://twitter.com"
+#
+[[params.socialIcons]]
+name = "Rss"
+url = "index.xml"
