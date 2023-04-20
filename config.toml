@@ -56,14 +56,16 @@ enableEmoji = true
   name = "Gautam Raj"
   description = "Assorted thoughts on problems I've encountered and reflections on some of the things I've built"
 
-#[[params.socialIcons]]
-#name = "github"
-#url = "https://github.com/hugo-sid"
-#
+[[params.socialIcons]]
+name = "github"
+url = "https://www.github.com/gautamraj"
 #[[params.socialIcons]]
 #name = "twitter"
 #url = "https://twitter.com"
 #
+[[params.socialIcons]]
+name = "LinkedIn"
+url = "https://www.linkedin.com/in/gautamraj/"
 [[params.socialIcons]]
 name = "Rss"
 url = "index.xml"
