@@ -19,7 +19,7 @@ weight = 1
 [[menu.nav]]
 name = "Blog"
 pre = "edit"
-url = "/blog/"
+url = "/post/"
 weight = 2
 
 [[menu.nav]]
