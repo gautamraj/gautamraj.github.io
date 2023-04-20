@@ -1,7 +1,6 @@
 ---
 title: About
 description: 'About me'
-date: '2023-04-19'
 author: Gautam
 ---
 

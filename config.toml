@@ -45,7 +45,7 @@ enableEmoji = true
 
 [params]
   sitename = "Another software engineering blog"
-  defaultColor = "dark" # set default color mode: dark or light
+  defaultColor = "light" # set default color mode: dark or light
   description = "Assorted thoughts on problems I've encountered and reflections on some of the things I've built"
   mainSections = ['posts']
 

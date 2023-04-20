@@ -1,7 +1,6 @@
 ---
-title: "Robust iterators for server-side gRPC streams in Java"
+title: "Robust iterators for gRPC server-side streams in Java"
 date: 2023-04-18
-type: "post"
 ---
 
 One useful feature of gRPC is server-side streaming. A client can use this to
