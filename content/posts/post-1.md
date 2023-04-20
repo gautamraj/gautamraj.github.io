@@ -1,7 +1,14 @@
-One useful feature of gRPC is server-side streaming. You can use this to stream
-over large amounts of data, for example the result of a large database query.
+---
+title: "Robust iterators for server-side gRPC streams in Java"
+date: 2023-04-18
+type: "post"
+---
 
-The "blocking" API for this looks like:
+One useful feature of gRPC is server-side streaming. A client can use this to
+stream over large amounts of data from a server, for example the result of a
+large database query.
+
+The "blocking" API for this has a familiar Iterator API:
 ```java
 Iterator<StreamResponse> iterator = blockingStub.makeStreamingCall();
 while (iterator.hasNext()) {
@@ -10,7 +17,7 @@ while (iterator.hasNext()) {
 }
 ```
 
-However, there are a few hidden issues here:
+However, there are a few hidden issues to think about here:
 1. What happens if we get a network error halfway through the stream?
 2. What if we want to terminate the stream early?
 
