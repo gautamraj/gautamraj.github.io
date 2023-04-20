@@ -1,1 +1,1 @@
-My personal blog at https://gautamraj.github.io/blog/
+My personal blog at https://gautamraj.github.io/
