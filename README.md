@@ -1,1 +1,1 @@
-Hugo blog. Generates content in the public/ folder
+My personal blog at https://gautamraj.github.io/blog/
