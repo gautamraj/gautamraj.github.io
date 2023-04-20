@@ -1,10 +1,6 @@
 [submodule "themes/hugo-ink"]
 	path = themes/hugo-ink
 	url = https://github.com/knadh/hugo-ink.git
-[submodule "public"]
-	path = public
-	url = https://github.com/gautamraj/gautamraj.github.io.git
-	branch = main
 [submodule "themes/vanilla-bootstrap-hugo-theme"]
 	path = themes/vanilla-bootstrap-hugo-theme
 	url = https://github.com/zwbetz-gh/vanilla-bootstrap-hugo-theme.git
