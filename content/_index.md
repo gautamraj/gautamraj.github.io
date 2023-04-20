@@ -1,4 +1,4 @@
 ---
 title: "Home"
-author : "Gautam"
+author : "Gautam Raj"
 ---
