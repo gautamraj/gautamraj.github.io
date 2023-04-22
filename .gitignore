@@ -1,2 +1,5 @@
 .*.swp
+.hugo_build.lock
 .idea
+public/
+resources/

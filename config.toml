@@ -11,7 +11,7 @@ defaultContentLanguage = "en-us"
 
 # To enable Google Analytics 4 (gtag.js) provide G-MEASUREMENT_ID below.
 # To disable  Google Analytics, simply leave the field empty or remove the next line
-googleAnalytics = '' # G-MEASUREMENT_ID
+googleAnalytics = 'G-ZJX01Z4X76'
 
 
 # Enable emojis globally
@@ -44,7 +44,7 @@ enableEmoji = true
     weight = 30
 
 [params]
-  sitename = "Another software engineering blog"
+  sitename = "Software engineering blog"
   defaultColor = "light" # set default color mode: dark or light
   description = "Assorted thoughts on problems I've encountered and reflections on some of the things I've built"
   mainSections = ['posts']
@@ -52,7 +52,7 @@ enableEmoji = true
 [params.author]
   avatar = "avatar.jpg" # put the file in assets folder; also ensure that image has same height and width
   # Note: image is not rendered if the resource(avatar image) is not found. No error is displayed.
-  intro = "Another software engineering blog"
+  intro = "Software engineering blog"
   name = "Gautam Raj"
   description = "Assorted thoughts on problems I've encountered and reflections on some of the things I've built"
 
