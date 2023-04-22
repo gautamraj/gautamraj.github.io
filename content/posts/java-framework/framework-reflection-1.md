@@ -6,16 +6,17 @@ date: 2023-04-19
 ## Background
 I spent several years at Stripe building a Java services framework, as a replacement for the existing aging Ruby monolith. There aren't a lot of resources around building a framework, so I thought I'd share some details about the framework, and some of the lessons we learned along the way.
 
-**Disclaimer - the framework I describe here wasn't built by only me, but was a collaboration with several talented teammates, and with a lot of helpful feedback from internal developers. My goal in writing about it is to share what we built and the lessons we learned along the way so that others can benefit from it.**
+The framework I describe here wasn't built by only me, but was a collaborative effort from across the company, and with a lot of helpful input from our internal developers. My goal in writing about it is to share what we built and the lessons we learned along the way, so that others can benefit from it.
 
 ## Philosophy
-Our core principle was data isolation. The service (and its various supporting components) could access its data, but anything outside the service had to go through a public interface, e.g. a gRPC request or a Kafka event. This is the primary distinction between SoA and a monolith (or a distributed monolith).
+Our guiding principle was that a service's data should be isolated. The service (and its various supporting components) could access its data, but anything outside the service had to go through a public interface, e.g. a gRPC request or a Kafka event. This is the primary distinction between SoA and a monolith - if you break this rule you end up with a distributed monolith.
 
 The service framework is a point of leverage - you can standardize on a common set of abstractions that everyone learns. Then as engineers switch teams, they still stay within a familiar framework, just with different business logic.
 
 Lastly, we also set out to build an _opinionated_ framework. It was not a goal to support every edge case, but we wanted to have a good set of defaults.
 
 ## Design choices
+
 ### Service Bundle
 We relaxed the data isolation constraint slightly in that we allowed a small set of tightly coupled servers to talk directly to the database. We called this data isolation layer the "service bundle". Within it, there could be multiple kubernetes pods, and each pod had a type of "flavor" (e.g. "rpc-server" for handling gRPC traffic, or "worker" for processing async traffic). These flavors were opinionated about what could run on them, e.g. you couldn't consume from a queue on an "rpc"-flavored pod - that had to happen on a "worker" pod.
 
@@ -27,6 +28,7 @@ We chose to go with a declarative approach using config files as the source of t
 
 ### Example
 Suppose your want to build a chat service, which has an rpc interface and some asynchronous worker processes for admin actions. A simplified config might look like:
+
 ```yaml
 bundle_name: chat
 pods:
@@ -48,6 +50,7 @@ Note that this config is very sparse - there are hidden conventions here. If you
 ## Code generation
 
 There are several types of code generation:
+
 1. Generating one-off checked-in files that are meant to be edited.
 2. Dynamically generating files on the fly from config.
 3. Dynamically generating files on the fly from annotations.
@@ -65,11 +68,14 @@ This led us to adopting type (3), where you use annotations to register componen
 ```java
 @Model(db = "chatdb", collection = "ChatLog")
 @Id(prefix = "cl", type = RANDOM)
-abstract class ChatLog implements Model<ChatLogPb> {
+public abstract class ChatLog implements Model<ChatLogPb> {
+  public static ChatLog create() {
+    return new ChatLogImpl();
+  }
 }
 ```
 
-Then the annotation processor can generate a concrete implementation, that statically registers this model with the appropriate datastore, and generates all the boilerplate around getters/setters.
+Then the annotation processor can generate a concrete implementation that statically registers this model with the appropriate datastore, and generates all the boilerplate around getters/setters.
 
 ### Example tree
 A simplified tree then looks something like this:
@@ -100,13 +106,14 @@ A simplified tree then looks something like this:
 
 ```
 
-It's important to separate what is publicly exportable from your bundle (client APIs, events) from the internals (database models and server implementations).
+It's important to have conventions that separate what is publicly exportable from your bundle (client APIs, events) from the internals (database models and server implementations). You can then use bazel visibility rules to lock down internal packages.
 
 ## Dependency Injection
-All Java frameworks need _some_ kind of dependency injection framework for modularity and managing complexity. We used [Dagger](https://github.com/google/dagger), which has the nice property of detecting problems with the graph at compile-time.
+All Java frameworks need _some_ kind of dependency injection framework for modularity and managing complexity. We used [Dagger](https://github.com/google/dagger), which has the nice property of detecting problems with the graph at compile-time. Beware that there is a learning curve to these frameworks, so keeping things simple and avoiding advanced features (like non-Singleton scopes) is a good strategy.
 
 ## Ops
 At the core of each rpc server is the Op. It connects business logic written in Java to RPC methods - every RPC method has a corresponding op. The op has a synchronous interface - you implement a method that looks like:
+
 ```java
 public class MyOp implements ServiceOp<Request, Response> {
   
@@ -121,6 +128,11 @@ We chose to only support synchronous calls for simplicity. Each op runs on a sin
 With [Project Loom](https://wiki.openjdk.org/display/loom/Main) expected to be released as stable in JDK21 this is likely to be a good decision in hindsight.
 
 ## Workflows
-We use Temporal [Workflows](https://docs.temporal.io/workflows#:~:text=Workflow%20Execution%E2%80%8B) to define tasks that run asynchronously. It supports reliable execution with retries. You can read much more about this on the [Temporal](https://temporal.io/) website.
+We use Temporal [Workflows](https://docs.temporal.io/workflows#:~:text=Workflow%20Execution%E2%80%8B) to define tasks that run asynchronously, for example periodic hourly tasks, or for cleaning up partial failures in the online RPC path. It's a powerful framework that supports reliable execution of complex multi-step operations with retries. You can read much more about this on the [Temporal](https://temporal.io/) website.
+
+## Observability
+The last important piece I'll touch on is the observability story - metrics, logging, tracing. You want a mix of tagged metrics for alerting and dashboards (e.g. prometheus), the ability to query server logs (e.g. splunk), and distributed tracing across multiple systems.
+
+Debugging services in production is difficult, and the best thing you can do to make it easier is to make it easy to instrument code. All gRPC calls should be instrumented out of the box with something like OpenTelemetry with both client and server interceptors. Within the application, an AOP annotation-based AOP approach is the most ergonomic - simply annotate your functions with the metrics you want them to emit. See [this link](https://opentelemetry.io/docs/instrumentation/java/automatic/annotations/) for some great examples.
 
 (to be continued in part 2...)
