@@ -14,7 +14,7 @@ defaultContentLanguage = "en-us"
 googleAnalytics = 'G-ZJX01Z4X76'
 
 # Robots file for search engines
-enableRobotsTXT: true
+enableRobotsTXT = true
 
 # Enable emojis globally
 enableEmoji = true
