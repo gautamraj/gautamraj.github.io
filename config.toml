@@ -13,6 +13,8 @@ defaultContentLanguage = "en-us"
 # To disable  Google Analytics, simply leave the field empty or remove the next line
 googleAnalytics = 'G-ZJX01Z4X76'
 
+# Robots file for search engines
+enableRobotsTXT: true
 
 # Enable emojis globally
 enableEmoji = true
