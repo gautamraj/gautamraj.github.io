@@ -19,6 +19,9 @@ enableRobotsTXT = true
 # Enable emojis globally
 enableEmoji = true
 
+# Enable last modified from git
+enableGitInfo = true
+
 # set markup.highlight.noClasses=false to enable code highlight
 [markup]
   [markup.highlight]
