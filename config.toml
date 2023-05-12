@@ -71,6 +71,6 @@ url = "https://www.github.com/gautamraj"
 [[params.socialIcons]]
 name = "LinkedIn"
 url = "https://www.linkedin.com/in/gautamraj/"
-[[params.socialIcons]]
-name = "Rss"
-url = "index.xml"
+#[[params.socialIcons]]
+#name = "Rss"
+#url = "index.xml"
