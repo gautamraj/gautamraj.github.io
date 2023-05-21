@@ -1,4 +1,4 @@
-title = "Gautam's Blog"
+title = "Software Engineering Blog"
 baseURL = "https://gautamraj.github.io/"
 
 # This is what goes in <html lang="">
@@ -18,9 +18,6 @@ enableRobotsTXT = true
 
 # Enable emojis globally
 enableEmoji = true
-
-# Enable last modified from git
-enableGitInfo = true
 
 # set markup.highlight.noClasses=false to enable code highlight
 [markup]
@@ -49,17 +46,17 @@ enableGitInfo = true
     weight = 30
 
 [params]
-  sitename = "Software engineering blog"
+  sitename = "Software Engineering Blog"
   defaultColor = "light" # set default color mode: dark or light
-  description = "Assorted thoughts on problems I've encountered and reflections on some of the things I've built"
+  description = "Sharing my thoughts on software engineering problems I've encountered"
   mainSections = ['posts']
 
-[params.author]
-  avatar = "avatar.jpg" # put the file in assets folder; also ensure that image has same height and width
-  # Note: image is not rendered if the resource(avatar image) is not found. No error is displayed.
-  intro = "Software engineering blog"
-  name = "Gautam Raj"
-  description = "Assorted thoughts on problems I've encountered and reflections on some of the things I've built"
+#[params.author]
+#  avatar = "avatar.jpg" # put the file in assets folder; also ensure that image has same height and width
+#  # Note: image is not rendered if the resource(avatar image) is not found. No error is displayed.
+#  intro = "Software engineering blog"
+#  name = "Gautam Raj"
+#  description = "Assorted thoughts on problems I've encountered and reflections on some of the things I've built"
 
 [[params.socialIcons]]
 name = "github"
@@ -67,7 +64,6 @@ url = "https://www.github.com/gautamraj"
 #[[params.socialIcons]]
 #name = "twitter"
 #url = "https://twitter.com"
-#
 [[params.socialIcons]]
 name = "LinkedIn"
 url = "https://www.linkedin.com/in/gautamraj/"
