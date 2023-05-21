@@ -2,6 +2,9 @@
 title: "Reflections on building a Java service framework (part 2)"
 date: 2023-04-20
 draft: true
+tags:
+- Java
+- framework
 ---
 ## Lessons learned
 Outline

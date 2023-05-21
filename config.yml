@@ -1,0 +1,81 @@
+title: Gautam Raj's Blog
+baseURL: 'https://gautamraj.github.io/'
+paginate: 5
+theme: PaperMod
+languageCode: en-us
+defaultContentLanguage: en-us
+googleAnalytics: G-ZJX01Z4X76
+
+enableRobotsTXT: true
+enableEmoji: true
+pygmentsUseClasses: true
+
+minify:
+  disableXML: true
+taxonomies:
+  tag: tags
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    anchorLineNos: false
+    codeFences: true
+    guessSyntax: false
+    hl_Lines: ""
+    hl_inline: false
+    lineAnchors: ""
+    lineNoStart: 1
+    lineNos: false
+    lineNumbersInTable: true
+    noClasses: true
+    noHl: false
+    style: vs
+    tabWidth: 2
+menu:
+  main:
+    - pageRef: /
+      name: Home
+      url: /
+      weight: 10
+    - pageRef: posts
+      name: Posts
+      url: /posts/
+      weight: 20
+    - pageRef: tags
+      name: Tags
+      url: /tags/
+      weight: 30
+    - pageRef: about
+      name: About
+      url: /about/
+      weight: 40
+params:
+  env: production
+  description: Sharing my thoughts on software engineering problems I've encountered
+  author: Gautam Raj
+  sitename: Better Code
+  defaultTheme: auto
+  mainSections:
+    - posts
+  ShowShareButtons: false
+  ShowReadingTime: true
+  # disableSpecial1stPost: true
+  ShowSocialIcons: false
+
+  displayFullLangName: true
+  ShowPostNavLinks: false
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: false
+  ShowRssButtonInSectionTermList: true
+  ShowToc: true
+
+  homeInfoParams:
+    Title: Welcome!
+    Content: Here I mostly write about software engineering problems I've encountered.
+
+  socialIcons:
+    - name: github
+      url: 'https://www.github.com/gautamraj'
+    - name: LinkedIn
+      url: 'https://www.linkedin.com/in/gautamraj/'

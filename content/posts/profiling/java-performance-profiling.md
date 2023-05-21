@@ -1,6 +1,9 @@
 ---
-title: "Java performance profiles"
+title: "Java performance profiling"
 date: 2023-05-04
+tags:
+  - Java
+  - profiling
 ---
 For me, one of the most fun parts of software development is making software run as fast as
 possible. Performance tuning has very simple objective metrics - maximize throughput, minimize
@@ -43,7 +46,8 @@ JMH also supports emitting profile data that can be loaded into speedscope. You 
 like:
 
 ```shell
-java -jar <bench.jar> -- -prof async:libPath=/path/to/async-profiler/build/libasyncProfiler.so\;output=collapsed\;dir=/path/to/profiles/
+java -jar <bench.jar> -- \
+  -prof async:libPath=/path/to/async-profiler/build/libasyncProfiler.so\;output=collapsed\;dir=/path/to/profiles/
 ```
 
 ## Example
@@ -52,22 +56,18 @@ Let's say you have a method that sanitizes a string by replacing all non-alphanu
 with underscores. You might write something like:
 
 ```java
-String sanitize(String input){
-    // Inefficient! Uses a hidden regex compile on every call.
-    return input.replaceAll("[^a-zA-Z0-9]","_");
-    }
+String sanitize(String input) {
+  // Inefficient! Uses a hidden regex compile on every call.
+  return input.replaceAll("[^a-zA-Z0-9]","_");
+}
 ```
 
-We can write a simple jmh microbenchmark that calls this function, and run it using:
-
-```shell
-bazel run //path/to/benchmark -- -prof async:libPath=/path/to/profiler/libasyncProfiler.so\;output=collapsed\;dir=$PWD/profiles/
-```
-
-If we run this and put it into a tool like https://speedscope.app, we get this flamegraph:
+We can write a simple jmh microbenchmark that calls this function, and run it using the jmh
+profiling command above. If we drag the output file into [speedscope](https://speedscope.app), we
+get this flamegraph:
 [![replaceAll CPU flamegraph](/profiling/replaceAll-cpu-profile.png "CPU flamegraph")](/profiling/replaceAll-cpu-profile.png)
 
-We see the majority of CPU cycles (42%) are being spent on `Pattern.compile` - a clear sign that
+We see the majority of CPU cycles (42%!) are being spent on `Pattern.compile` - a clear sign that
 something is wrong. The fix is to compile the regex once and reuse it:
 
 ```java
@@ -79,4 +79,5 @@ String sanitize(String input) {
 }
 ```
 
-While this is a trivial example, using a continuous profiler can make it easy to find these types of problems in a larger application, and then using a microbenchmark can help you iterate on a fix. 
+While this is a trivial example, using a continuous profiler can make it easy to find these types of
+problems in a larger application, and then using a microbenchmark can help you iterate on a fix. 

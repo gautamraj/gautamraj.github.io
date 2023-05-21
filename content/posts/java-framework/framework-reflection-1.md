@@ -1,6 +1,9 @@
 ---
 title: "Reflections on building a Java service framework (part 1)"
 date: 2023-04-19
+tags:
+- Java
+- framework
 ---
 
 ## Background

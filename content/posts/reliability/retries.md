@@ -2,6 +2,9 @@
 title: "Retries"
 date: 2023-05-10
 draft: true
+tags:
+- reliability
+- distributed-systems
 ---
 Retries are a simple but incredibly important part of any system. This post is to share some of my
 learnings on the topic.
