@@ -16,9 +16,9 @@ speaking, the approach is to identify hotspots in your code, and rewrite them in
 * Call the expensive thing less often, perhaps using caching. There are many instances where you can
   tradeoff memory for CPU. An in-memory cache is a good way to store computations for future use.
 
-# Tooling
+# Tools
 
-## Profiling
+## Continuous Profiling
 
 Your first go-to is to run a profiler in
 production. [async-profiler](https://github.com/async-profiler/async-profiler) is a low-overhead
@@ -65,7 +65,7 @@ bazel run //path/to/benchmark -- -prof async:libPath=/path/to/profiler/libasyncP
 ```
 
 If we run this and put it into a tool like https://speedscope.app, we get this flamegraph:
-![replaceAll CPU flamegraph](/profiling/replaceAll-cpu-profile.png "CPU flamegraph").
+[![replaceAll CPU flamegraph](/profiling/replaceAll-cpu-profile.png "CPU flamegraph")](/profiling/replaceAll-cpu-profile.png)
 
 We see the majority of CPU cycles (42%) are being spent on `Pattern.compile` - a clear sign that
 something is wrong. The fix is to compile the regex once and reuse it:
@@ -79,5 +79,4 @@ String sanitize(String input) {
 }
 ```
 
-While this is a trivial example, using a profiler can make it easy to find these types of problems
-in a larger application.
+While this is a trivial example, using a continuous profiler can make it easy to find these types of problems in a larger application, and then using a microbenchmark can help you iterate on a fix. 

@@ -1,10 +1,11 @@
-title = "Software Engineering Blog"
+title = "Yet Another Software Engineer's Blog"
 baseURL = "https://gautamraj.github.io/"
 
 # This is what goes in <html lang="">
 languageCode = 'en-us'
 
-theme = "hugo-blog-awesome"
+#theme = "hugo-blog-awesome"
+theme = "PaperMod"
 
 # This defines how dates are formatted
 defaultContentLanguage = "en-us"
@@ -46,10 +47,13 @@ enableEmoji = true
     weight = 30
 
 [params]
-  sitename = "Software Engineering Blog"
+  sitename = "Yet Another Software Engineer's Blog"
   defaultColor = "light" # set default color mode: dark or light
   description = "Sharing my thoughts on software engineering problems I've encountered"
   mainSections = ['posts']
+
+  ShowReadingTime = true
+  ShowSocialIcons = true
 
 #[params.author]
 #  avatar = "avatar.jpg" # put the file in assets folder; also ensure that image has same height and width
