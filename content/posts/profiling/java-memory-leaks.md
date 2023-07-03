@@ -118,11 +118,11 @@ size of this heap dump.
 
 First we can look for the largest retained objects in memory:
 
-![retained sizes](retained_sizes.png)
+![retained sizes](/profiling/memory_leaks/retained_sizes.png)
 
 Then we can calculate the shortest path to GC roots:
 
-![shortest path gc root](shortest_path_gc_root.png)
+![shortest path gc root](/profiling/memory_leaks/shortest_path_gc_root.png)
 
 We can see that the `inflightActions` Map has been identified as the culprit. Note that this doesn't
 tell us which code path is actually causing the leak, but this is typically enough information to
@@ -148,13 +148,13 @@ java -XX:StartFlightRecording:memory-leaks=gc-roots,maxsize=1G,filename=/tmp/ ..
 The resulting snapshot is only ~700KiB!
 
 Loading this into YourKit we see that there are Old Object Sample Events:
-![event counts](old_object_event_count.png)
+![event counts](/profiling/memory_leaks/old_object_event_count.png)
 
 We can group by the Object Class type and see the 3 classes we saw in the histogram above:
-![grouped by event class](group_by_object_event_class.png)
+![grouped by event class](/profiling/memory_leaks/group_by_object_event_class.png)
 
 And the stack trace now takes us right to the cause!
-![event stack trace](object_event_stack_trace.png)
+![event stack trace](/profiling/memory_leaks/object_event_stack_trace.png)
 
 # References
 1. https://hirt.se/blog/?p=1055
