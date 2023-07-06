@@ -31,15 +31,19 @@ long-lived memory.
 In practice what we're looking for is memory pressure. There are a few approaches to identifying
 issues.
 
-1. Look at "live" heap
-   We can look at the size of the "live" heap that remains after each GC cycle. With a generational
-   garbage collector this is roughly the size of the tenured generation.
+1. Look at "live" heap.
 
-2. Look at time spent in GC
+   We can look at the size of the "live" heap that remains after each GC cycle. With a generational
+   garbage collector like G1 this is roughly the size of the tenured generation. If you're using one
+   of the newer collectors like Shenandoah or ZGC you'll have to wait for JDK21 to get this.
+
+2. Look at time spent in GC.
+
    Often as a memory leak progresses we'll see a steadily increasing amount of time spent in GC.
 
-All of this information is available from the GarbageCollectorMBean from JMX, the Java Management
-Extensions.
+All of this information is available from
+the [`GarbageCollectorMBean`](https://docs.oracle.com/en/java/javase/17/docs/api/java.management/java/lang/management/GarbageCollectorMXBean.html)
+from JMX, the Java Management Extensions.
 
 # Diagnosing a leak
 
@@ -50,14 +54,14 @@ Let's use an example:
 ```java
 class LeakyFunction {
 
-  // Track inflight actions.
+  // Track in-flight actions.
   private final Set<String> inflightActions = ConcurrentHashMap.newKeySet();
 
   /**
    * Do something.
    */
   public String call(String actionId, String input) {
-    // Record that we're doing something.
+    // Store the action id.
     inflightActions.add(actionId);
 
     String result = doSomeAction(input);
@@ -65,7 +69,7 @@ class LeakyFunction {
     // BUG: Forget to release resources 30% of the time.
     boolean shouldSkip = RandomUtils.nextDouble(0, 1) < 0.3;
     if (!shouldSkip) {
-      // Remove the inflight action.
+      // Remove the action id.
       inflightActions.remove(actionId);
     }
 
@@ -76,8 +80,10 @@ class LeakyFunction {
 
 ## Class Histogram
 
-The quickest/simplest option is to take a class histogram using `jcmd`. With our example leak class
-we see something like this:
+The cheapest/simplest option is to take a class histogram using `jcmd`. This will trigger a full GC,
+and only show us objects that remain.
+
+With our example leak class we see something like this:
 
 ```
 [1] % jcmd <pid> GC.class_histogram
@@ -98,21 +104,23 @@ num     #instances         #bytes  class name (module)
 
 This tells us that `byte[]`, `ConcurrentHashMap$Node`, and `String` take up most of our heap, but it
 doesn't tell us where they're coming from. The `ConcurrentHashMap$Node` is the only interesting
-piece of information we can really gather from this.
+piece of information we can really gather from this. You can potentially combine this information
+with a suspected git commit to narrow down the source of the leak.
 
 ## Full Heap dump
 
-Another option is to take a full heap dump. This lets us look inside of memory and understand which
-objects are retaining the most amount of space. We can also trace the objects back to their GC roots
-to understand what is holding onto the memory.
+The most expensive option is to take a full heap dump. This lets us look inside of memory and
+understand which objects are retaining the most amount of space. We can also trace the objects back
+to their GC roots to understand what is holding onto the memory.
 
 We can take a heap dump using:
 ```shell
 jcmd <pid> GC.heap_dump
 ```
 
-In our example we get a ~100MB file. I've intentionally set the max heap size to 128MB to limit the
-size of this heap dump.
+This will force a full GC and return only non-live objects. Running our example for 60 seconds we
+get a ~100MB file. Note that I've intentionally set the max heap size to 128MB to limit the size of
+this heap dump - in practice heap dumps can be much larger.
 
 (NOTE: The following screenshots are from YourKit but you can also use jvisualvm.)
 
@@ -138,16 +146,17 @@ encryption/decryption keys.
 JDK11 introduced Java Flight Recorder (JFR), a low overhead tool for profiling Java applications.
 
 The most relevant ability is to sample events for "Old Objects", including their heap usage and
-paths back to the allocation roots. This is available in JDK17.
+paths back to the allocation roots. This is available starting in JDK11.
 
-We run the application for 60s with:
+We run the application again for 60 seconds with the following args:
 ```shell
+# NOTE: memory-leaks=gc-roots requires JDK17+, otherwise take a full profile
 java -XX:StartFlightRecording:memory-leaks=gc-roots,maxsize=1G,filename=/tmp/ ...
 ```
 
-The resulting snapshot is only ~700KiB!
+The resulting snapshot is only ~700KB!
 
-Loading this into YourKit we see that there are Old Object Sample Events:
+Loading this into the YourKit profiler we see that there are Old Object Sample Events:
 ![event counts](/profiling/memory_leaks/old_object_event_count.png)
 
 We can group by the Object Class type and see the 3 classes we saw in the histogram above:
@@ -155,6 +164,17 @@ We can group by the Object Class type and see the 3 classes we saw in the histog
 
 And the stack trace now takes us right to the cause!
 ![event stack trace](/profiling/memory_leaks/object_event_stack_trace.png)
+
+While this approach seems strictly superior, it's worth noting that these events are sampled and may
+be drowned out by other legitimate writes to old objects, e.g. in-memory cache writes. There's also
+some small overhead to running JFR in production, on the order of < 2% CPU.
+
+# Summary
+The 3 approaches outlined here in order of cost are:
+1. Class Histogram: The easiest to run but often not helpful.
+2. Old Object sample events: Extremely helpful if the leak is in the set of samples. Requires profiling in production.
+3. Full Heap Dump: By far the most expensive to run and analyze, but they contain complete
+   information about the heap.
 
 # References
 1. https://hirt.se/blog/?p=1055
