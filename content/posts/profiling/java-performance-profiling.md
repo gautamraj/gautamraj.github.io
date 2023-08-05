@@ -4,6 +4,7 @@ date: 2023-05-04
 tags:
   - Java
   - profiling
+description: "A guide to CPU profiling for Java applications using micro-benchmarks and production profilers."
 ---
 For me, one of the most fun parts of software development is making software run as fast as
 possible. Performance tuning has very simple objective metrics - maximize throughput, minimize

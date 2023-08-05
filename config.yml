@@ -51,7 +51,6 @@ menu:
       url: /about/
       weight: 40
 params:
-  env: production
   description: Sharing my thoughts on software engineering problems I've encountered
   author: Gautam Raj
   sitename: Better Code

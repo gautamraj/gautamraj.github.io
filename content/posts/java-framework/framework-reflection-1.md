@@ -4,6 +4,7 @@ date: 2023-04-19
 tags:
 - Java
 - framework
+description: "Reflections on building a service framework. Describes our philosophy, choices and tradeoffs that were made, and lessons we learned along the way (part 1)."
 ---
 
 ## Background

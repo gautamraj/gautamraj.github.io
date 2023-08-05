@@ -5,6 +5,7 @@ tags:
   - Java
   - profiling
   - memory
+description: "A guide to detecting and diagnosing memory leaks in Java applications, using heap dumps and Java Flight Recorder (JFR) profiles."
 ---
 
 Despite being a garbage-collected language, memory leaks are still possible (and quite common) in

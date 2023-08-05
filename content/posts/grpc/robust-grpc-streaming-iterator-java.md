@@ -4,6 +4,7 @@ date: 2023-04-18
 tags:
   - gRPC
   - Java
+description: "How to consume gRPC streams in Java using iterators, with retries and without leaking memory."
 ---
 
 One useful feature of gRPC is server-side streaming. A client can use this to

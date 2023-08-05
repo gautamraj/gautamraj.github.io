@@ -5,6 +5,7 @@ draft: true
 tags:
 - reliability
 - distributed-systems
+description: "Guide to using retries in distributed systems to improve reliability. Explains when, where, and how to retry."
 ---
 Retries are a simple but incredibly important part of any system. This post is to share some of my
 learnings on the topic.
